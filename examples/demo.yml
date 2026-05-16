@@ -1,0 +1,31 @@
+---
+- name: Demo Playbook
+  hosts: all
+  gather_facts: false
+
+  vars:
+    greeting: "Hello from gosible"
+
+  tasks:
+    - name: Print a greeting
+      shell: echo "Hello from gosible"
+
+    - name: Show the current date
+      shell: date
+
+    - name: Show hostname
+      ansible.builtin.shell:
+        cmd: hostname
+
+    - name: Run with chdir (should print /tmp)
+      shell:
+        cmd: pwd
+        chdir: /tmp
+
+    - name: Demonstrate creates skip (file exists, task is skipped)
+      shell: echo "this should NOT run"
+      creates: /etc/hostname
+
+    - name: Register a variable
+      shell: echo "gosible works"
+      register: result

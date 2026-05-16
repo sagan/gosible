@@ -1,0 +1,18 @@
+---
+# Fixture: shell_creates.yml
+# Tests: creates skips the task when the file exists,
+#        and runs the task when the file does NOT exist.
+# Compatible with both gosible and ansible-playbook.
+- name: Shell creates
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Skip because /etc/hosts exists
+      ansible.builtin.shell:
+        cmd: echo "should be skipped"
+        creates: /etc/hosts
+
+    - name: Run because /nonexistent/gosible_creates_test does not exist
+      ansible.builtin.shell:
+        cmd: echo "ran because file missing"
+        creates: /nonexistent/gosible_creates_test

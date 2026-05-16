@@ -1,0 +1,27 @@
+- name: Lineinfile Advanced
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Create a test file
+      shell: "echo 'initial content' > /tmp/lineinfile_adv.txt"
+
+    - name: Test backup
+      lineinfile:
+        path: /tmp/lineinfile_adv.txt
+        line: "backup line"
+        backup: yes
+      register: backup_res
+
+    - name: Test validate success
+      lineinfile:
+        path: /tmp/lineinfile_adv.txt
+        line: "validated line"
+        validate: "grep 'validated line' %s"
+
+    - name: Test validate failure
+      lineinfile:
+        path: /tmp/lineinfile_adv.txt
+        line: "invalid line"
+        validate: "/usr/bin/false"
+      ignore_errors: yes
+      register: validate_fail_res

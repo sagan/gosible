@@ -1,0 +1,35 @@
+- name: File Module Basic
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Create a directory
+      file:
+        path: /tmp/gosible_test_dir
+        state: directory
+        mode: "0755"
+
+    - name: Touch a file
+      file:
+        path: /tmp/gosible_test_dir/test_file
+        state: touch
+        mode: "0644"
+
+    - name: Create a symlink
+      file:
+        path: /tmp/gosible_test_dir/test_link
+        src: /tmp/gosible_test_dir/test_file
+        state: link
+
+    - name: Ensure attributes on existing file
+      file:
+        path: /tmp/gosible_test_dir/test_file
+        mode: "0600"
+
+    - name: Verify attributes
+      shell: "stat -c '%a %F' /tmp/gosible_test_dir/test_file"
+      register: file_stat
+
+    - name: Remove the directory
+      file:
+        path: /tmp/gosible_test_dir
+        state: absent

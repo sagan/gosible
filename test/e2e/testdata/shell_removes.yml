@@ -1,0 +1,18 @@
+---
+# Fixture: shell_removes.yml
+# Tests: removes skips the task when the file does NOT exist,
+#        and runs the task when the file exists.
+# Compatible with both gosible and ansible-playbook.
+- name: Shell removes
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Skip because /nonexistent/gosible_removes_test does not exist
+      ansible.builtin.shell:
+        cmd: echo "should be skipped"
+        removes: /nonexistent/gosible_removes_test
+
+    - name: Run because /etc/hosts exists
+      ansible.builtin.shell:
+        cmd: echo "ran because file exists"
+        removes: /etc/hosts

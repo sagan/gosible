@@ -1,0 +1,16 @@
+---
+# Fixture: shell_basic.yml
+# Tests: basic free-form shell execution, stdout capture
+# Compatible with both gosible and ansible-playbook.
+- name: Shell Basic
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Echo a string
+      ansible.builtin.shell: echo "hello gosible"
+
+    - name: Echo to stderr via sh redirect
+      ansible.builtin.shell: echo "err output" >&2; exit 0
+
+    - name: Multi-word command
+      ansible.builtin.shell: echo one two three

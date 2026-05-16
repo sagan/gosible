@@ -1,0 +1,13 @@
+---
+# Fixture: shell_fail_stops_play.yml
+# Tests: an unhandled failure (no ignore_errors) stops subsequent tasks.
+# Compatible with both gosible and ansible-playbook.
+- name: Shell fail stops play
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: This task fails
+      ansible.builtin.shell: exit 1
+
+    - name: This task should NOT run
+      ansible.builtin.shell: echo "unreachable task"

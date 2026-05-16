@@ -1,0 +1,63 @@
+- name: Lineinfile Basic
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Create a test file
+      shell: "echo 'first line\nsecond line\nthird line' > /tmp/lineinfile_test.txt"
+
+    - name: Add a line if not present
+      lineinfile:
+        path: /tmp/lineinfile_test.txt
+        line: "fourth line"
+        state: present
+
+    - name: Replace a line using regexp
+      lineinfile:
+        path: /tmp/lineinfile_test.txt
+        regexp: "^second line$"
+        line: "updated second line"
+        state: present
+
+    - name: Remove a line
+      lineinfile:
+        path: /tmp/lineinfile_test.txt
+        line: "third line"
+        state: absent
+
+    - name: Use backrefs
+      lineinfile:
+        path: /tmp/lineinfile_test.txt
+        regexp: "^updated (.*) line$"
+        line: "backrefed \\1 line"
+        backrefs: yes
+        state: present
+
+    - name: Insert after
+      lineinfile:
+        path: /tmp/lineinfile_test.txt
+        insertafter: "^first line$"
+        line: "inserted after first"
+        state: present
+
+    - name: Insert before
+      lineinfile:
+        path: /tmp/lineinfile_test.txt
+        insertbefore: "BOF"
+        line: "inserted at beginning"
+        state: present
+
+    - name: Create file if missing
+      lineinfile:
+        path: /tmp/lineinfile_new.txt
+        line: "brand new line"
+        create: yes
+        state: present
+
+    - name: Verify content 1
+      shell: "grep 'backrefed second line' /tmp/lineinfile_test.txt"
+
+    - name: Verify content 2
+      shell: "grep 'inserted at beginning' /tmp/lineinfile_test.txt"
+
+    - name: Verify content 3
+      shell: "grep 'brand new line' /tmp/lineinfile_new.txt"

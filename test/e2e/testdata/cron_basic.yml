@@ -1,0 +1,44 @@
+- name: Cron Module Basic
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Add a cron job
+      cron:
+        name: "test job"
+        minute: "*/5"
+        job: "ls /tmp"
+        state: present
+
+    - name: Update the cron job
+      cron:
+        name: "test job"
+        minute: "*/10"
+        job: "ls /tmp"
+        state: present
+
+    - name: Disable the cron job
+      cron:
+        name: "test job"
+        job: "ls /tmp"
+        disabled: yes
+        state: present
+
+    - name: Remove the cron job
+      cron:
+        name: "test job"
+        state: absent
+
+    - name: Add a special time job
+      cron:
+        name: "reboot job"
+        special_time: reboot
+        job: "echo 'rebooted'"
+        state: present
+
+    - name: Verify crontab output
+      shell: "crontab -l | grep 'reboot job'"
+
+    - name: Final cleanup
+      cron:
+        name: "reboot job"
+        state: absent

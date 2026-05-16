@@ -1,0 +1,10 @@
+gosible
+/vendor/
+*.test
+*.out
+.env
+/dist
+
+# by default ignore any file in root dir
+/inventory
+/*.*

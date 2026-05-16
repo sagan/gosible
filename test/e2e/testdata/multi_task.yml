@@ -1,0 +1,19 @@
+---
+# Fixture: multi_task.yml
+# Tests: multiple tasks in order, stdout contents, task execution order.
+# Compatible with both gosible and ansible-playbook.
+- name: Multi task ordering
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: First task
+      ansible.builtin.shell: echo "step-1"
+
+    - name: Second task
+      ansible.builtin.shell: echo "step-2"
+
+    - name: Third task
+      ansible.builtin.shell: echo "step-3"
+
+    - name: Command with multiple output lines
+      ansible.builtin.shell: printf "line1\nline2\nline3\n"

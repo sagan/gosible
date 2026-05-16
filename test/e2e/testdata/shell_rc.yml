@@ -1,0 +1,19 @@
+---
+# Fixture: shell_rc.yml
+# Tests: non-zero return code marks the task as failed;
+#        ignore_errors lets the play continue.
+# Compatible with both gosible and ansible-playbook.
+- name: Shell return codes
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Successful command (rc=0)
+      ansible.builtin.shell: exit 0
+
+    - name: Failing command (rc=1) with ignore_errors
+      ansible.builtin.shell: exit 1
+      ignore_errors: true
+
+    - name: Failing command (rc=42) with ignore_errors
+      ansible.builtin.shell: exit 42
+      ignore_errors: true

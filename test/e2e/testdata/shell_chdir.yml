@@ -1,0 +1,17 @@
+---
+# Fixture: shell_chdir.yml
+# Tests: chdir option changes working directory before execution
+# Compatible with both gosible and ansible-playbook.
+- name: Shell chdir
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: pwd in /tmp
+      ansible.builtin.shell:
+        cmd: pwd
+        chdir: /tmp
+
+    - name: pwd in /var
+      ansible.builtin.shell:
+        cmd: pwd
+        chdir: /var
