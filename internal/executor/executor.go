@@ -213,6 +213,7 @@ func NewModuleContext(host *inventory.Host, conn modules.Connection, args module
 	for k, v := range host.Vars {
 		merged[k] = v
 	}
+	merged["inventory_hostname"] = host.Name
 	return &modules.ModuleContext{
 		Host:       host.Name,
 		Connection: conn,

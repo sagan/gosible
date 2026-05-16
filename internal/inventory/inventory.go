@@ -46,6 +46,32 @@ func New() *Inventory {
 	}
 }
 
+// Parse determines if the input is a comma-separated host list or a file path
+// and parses accordingly.
+func Parse(input string) (*Inventory, error) {
+	if strings.Contains(input, ",") {
+		return ParseList(input)
+	}
+	return ParseFile(input)
+}
+
+// ParseList parses a comma-separated list of hostnames.
+func ParseList(list string) (*Inventory, error) {
+	inv := New()
+	allGroup := inv.Groups["all"]
+	hosts := strings.Split(list, ",")
+	for _, h := range hosts {
+		h = strings.TrimSpace(h)
+		if h == "" {
+			continue
+		}
+		host := &Host{Name: h, Vars: map[string]string{}}
+		inv.Hosts[h] = host
+		allGroup.Hosts = append(allGroup.Hosts, host)
+	}
+	return inv, nil
+}
+
 // ParseFile reads an Ansible INI inventory file and returns a populated Inventory.
 func ParseFile(path string) (*Inventory, error) {
 	f, err := os.Open(path)

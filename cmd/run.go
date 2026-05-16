@@ -43,7 +43,7 @@ Examples:
 		pattern := args[0]
 
 		// Load inventory.
-		inv, err := inventory.ParseFile(rootFlags.Inventory)
+		inv, err := inventory.Parse(rootFlags.Inventory)
 		if err != nil {
 			return fmt.Errorf("run: %w", err)
 		}
